@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html manifest="index.appcache">
+<head>
+    <title>To Do List</title>
+    <meta charset='utf-8'/>
+    <meta name='format-detection' content='telephone=no'/>
+    <meta name='viewport'
+          content='width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1'/>
+    <link rel="icon" type="image/png" href="apps.png">
+    <link rel="shortcut icon" type="image/png" href="apps.png">
+    <link rel="stylesheet" href="jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="toastr.min.css">
+    <link rel="stylesheet" href="jqm-datebox.css">
+    <link rel="stylesheet" href="animate.css">
+    <link rel="stylesheet" href="addtohomescreen.css">
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="navbar.js" type="text/javascript"></script>
+    <script src="jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
+    <script src="jqm-datebox.core.js" type="text/javascript"></script>
+    <script src="jqm-datebox.mode.slidebox.js" type="text/javascript"></script>
+    <script src="jqm-datebox.mode.flipbox.js" type="text/javascript"></script>
+    <script src="jqm-datebox.mode.datebox.js" type="text/javascript"></script>
+    <script src="jqm-datebox.mode.customflip.js" type="text/javascript"></script>
+    <script src="jqm-datebox.mode.custombox.js" type="text/javascript"></script>
+    <script src="jqm-datebox.mode.calbox.js" type="text/javascript"></script>
+    <script src="toastr.min.js" type="text/javascript"></script>
+    <script src="fastclick.js" type="text/javascript"></script>
+    <!--[if IE]>
+    <script src="html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="stanfordcryptolibrary.js" type="text/javascript"></script>
+    <script src="excellentexport.min.js" type="text/javascript"></script>
+    <script src="iscroll.js" type="text/javascript"></script>
+    <script src="password.js" type="text/javascript"></script>
+    <script src="d3.min.js" type="text/javascript"></script>
+    <script src="d3tree.js" type="text/javascript"></script>
+    <script src="addtohomescreen.min.js" type="text/javascript"></script>
+    <script src="websql.js" type="text/javascript"></script>
+    <script src="app.js" type="text/javascript"></script>
+    <style>body * {
+        font-family: 'Segoe UI', Segoe, Tahoma, Geneva, sans-serif;
+    }
+
+    .ui-header .ui-title, .ui-footer .ui-title {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .marker {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content:first-child {
+        display: block;
+    }
+
+    .ui-body-c {
+        border: 1px solid #aaa !important;
+    }
+
+    caption {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li {
+        display: block !important;
+        padding: 0.9em 75px 0.9em 15px !important;
+    }
+
+    body .ui-li .ui-li-desc {
+        white-space: normal;
+    }
+
+    body .ui-footer .ui-title {
+        white-space: normal;
+    }
+
+    a, button, .myelements {
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    }
+    </style>
+</head>
+<body>
+
+
+    <div id="pgContact" data-role="page">
+        <div data-position="left" data-display="reveal" data-position-fixed="true" id="pgContactPnl" data-role="panel">
+            <ul data-role="listview" id="pgContactPnlLV">
+                <li><a data-transition="slide" href="#pgAddContact">Uus</a></li>
+                <li><a data-transition="slide" href="#pgRptContact">Ekspordi</a></li>
+                <li><a data-transition="slide" href="#pgMenu">Esilehele</a></li>
+            </ul>
+        </div>
+
+        <header id="pgContactHdr" data-role="header" data-position="fixed">
+            <h1>To Do List</h1>
+            <a data-role="button" id="pgContactMenu" href="#pgContactPnl" data-icon="bars" data-transition="slide"
+               class="ui-btn-left">Menüü</a>
+            <a data-role="button" id="pgContactNew" data-icon="plus" data-theme="b" class="ui-btn-right">Uus</a>
+        </header>
+        <div id="pgContactCnt" data-role="content">
+            <h3>Ülesanne</h3>
+            <ul data-role="listview" data-inset="true" id="pgContactList" data-autodividers="true" data-filter="true"
+                data-filter-placeholder="Search Contacts">
+                <li data-role="list-divider">Ülesanded</li>
+                <li id="noContact">Puudvad ülesanded</li>
+
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="pgRptContact" data-role="page">
+
+        <header id="pgRptContactHdr" data-role="header" data-position="fixed">
+            <h1>To Do List</h1>
+            <a data-role="button" id="pgRptContactBack" data-icon="arrow-l" class="ui-btn-left">Esilehele</a>
+            <a data-role="button" id="pgRptContactNew" data-icon="plus" data-theme="b" class="ui-btn-right">Uus</a>
+        </header>
+        <div id="pgRptContactCnt" data-role="content">
+            <table id="RptContact" data-column-btn-text="Columns To Display" data-column-btn-theme="b" data-role="table"
+                   data-mode="columntoggle" data-column-popup-theme="a"
+                   class="ui-responsive table-stroke table-stripe ui-shadow ui-body-d">
+                <thead>
+                <tr class="ui-bar-b">
+                    <th class="ui-bar-b">Ülesanne</th>
+                    <th class="ui-bar-b">Tähtaeg</th>
+                    <th class="ui-bar-b">Sisu</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div data-role="fieldcontain">
+                <a download="Contact.xls" onclick="return ExcellentExport.excel(this, 'RptContact', 'Contact');"
+                   id="pgRptContactExport" data-corners="true" href="#" class="ui-btn ui-corner-all ui-shadow">Expordi XML faili</a></div>
+        </div>
+
+    </div>
+
+    <div id="pgAddContact" data-role="page">
+        <div data-position="left" data-display="reveal" data-position-fixed="true" id="pgAddContactPnl"
+             data-role="panel">
+            <ul data-role="listview" id="pgAddContactPnlLV">
+                <li><a data-transition="slide" href="#pgAddContact">Uus</a></li>
+                <li><a data-transition="slide" href="#pgRptContact">Ekspordi</a></li>
+                <li><a data-transition="slide" href="#pgContact">Esilehele</a></li>
+            </ul>
+        </div>
+
+        <header id="pgAddContactHdr" data-role="header" data-position="fixed">
+            <h1>To Do List</h1>
+            <a data-role="button" id="pgAddContactMenu" href="#pgAddContactPnl" data-icon="bars" class="ui-btn-left">Menüü</a>
+            <div id="pgAddContactHdrNavBar" data-role="navbar">
+                <ul>
+                    <li><a href="#" data-href="pgAddContactDetails" id="pgAddContactDetailsBtn" class="ui-btn-active">Lisa ülesanne</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div id="pgAddContactCnt" data-role="content">
+            <div id="pgAddContactDetails" class="tab-content">
+                <div data-role="fieldcontain">
+                    <label for="pgAddContactFullName">Ülesanne</label>
+                    <input title="Ülesande pealkiri" type="text" name="pgAddContactFullName"
+                           id="pgAddContactFullName" placeholder="Ülesande pealkiri" autocomplete="off"
+                           data-clear-btn="true" class="required"></input>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="pgAddContactCompany">Tähtaeg</label>
+                    <input title="Sisesta tähtaeg" type="text" name="pgAddContactCompany" id="pgAddContactCompany"
+                           placeholder="Sisesta tähtaeg" autocomplete="off" data-clear-btn="true"
+                           class="required"></input>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="pgAddContactJobTitle">Sisu</label>
+                    <input title="Sisesta ülesande sisu" type="text" name="pgAddContactJobTitle"
+                           id="pgAddContactJobTitle" placeholder="Sisesta ülesande sisu" autocomplete="off"
+                           data-clear-btn="true" class="required"></input>
+                </div>
+
+            </div>
+        </div>
+
+        <footer id="pgAddContactFtr" data-role="footer" data-position="fixed">
+            <div id="pgAddContactFtrNavBar" data-role="navbar">
+                <ul>
+                    <li><a id="pgAddContactBack" data-icon="carat-l">Tühista</a>
+                    </li>
+                    <li><a type="submit" id="pgAddContactSave" data-icon="action">Salvesta</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+    <div data-url="FullName" id="pgEditContact" data-role="page">
+        <div data-position="left" data-display="reveal" data-position-fixed="true" id="pgEditContactPnl"
+             data-role="panel">
+            <ul data-role="listview" id="pgEditContactPnlLV">
+                <li><a data-transition="slide" href="#pgAddContact">Uus</a></li>
+                <li><a data-transition="slide" href="#pgRptContact">Ekspordi</a></li>
+                <li><a data-transition="slide" href="#pgContact">Esilehele</a></li>
+            </ul>
+        </div>
+
+        <header id="pgEditContactHdr" data-role="header" data-position="fixed">
+            <h1>To Do List</h1>
+            <a data-role="button" id="pgEditContactMenu" href="#pgEditContactPnl" data-icon="bars" class="ui-btn-left">Menüü</a>
+            <div id="pgEditContactHdrNavBar" data-role="navbar">
+                <ul>
+                    <li><a href="#" data-href="pgEditContactDetails" id="pgEditContactDetailsBtn" class="ui-btn-active">Ülesande detailid</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div id="pgEditContactCnt" data-role="content">
+            <h3>Muuda ülesannet</h3><div id="pgEditContactDetails" class="tab-content">
+            <div data-role="fieldcontain">
+                <label for="pgEditContactFullName">Ülesanne</label>
+                <input title="Enter full name here." type="text" name="pgEditContactFullName" id="pgEditContactFullName" placeholder="Enter full name here." autocomplete="off" data-clear-btn="true" class="required"></input>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="pgEditContactCompany">Tähtaeg</label>
+                <input title="Enter company here." type="text" name="pgEditContactCompany" id="pgEditContactCompany" placeholder="Enter company here." autocomplete="off" data-clear-btn="true" class="required"></input>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="pgEditContactJobTitle">Sisu</label>
+                <input title="Enter job title here." type="text" name="pgEditContactJobTitle" id="pgEditContactJobTitle" placeholder="Enter job title here." autocomplete="off" data-clear-btn="true" class="required"></input>
+            </div>
+        </div>
+        </div>
+
+        <footer id="pgEditContactFtr" data-role="footer" data-position="fixed">
+            <div id="pgEditContactFtrNavBar" data-role="navbar">
+                <ul>
+                    <li><a id="pgEditContactBack" data-icon="carat-l">Tühista</a>
+                    </li>
+                    <li><a type="submit" id="pgEditContactUpdate" data-icon="action">Uuenda</a>
+                    </li>
+                    <li><a id="pgEditContactDelete" data-icon="delete">Kustuta</a>
+                    </li>
+                </ul>
+            </div>
+        </footer></div>
+    <section data-dismissible="false" data-transition="pop" id="msgbox" data-role="dialog">
+
+        <header id="msgboxHdr" data-role="header" data-position="fixed">
+            <h1>Nõustu</h1>
+        </header>
+        <div id="msgboxCnt" data-role="content">
+            <div id="msgboxtitle">
+            </div>
+            <br><div id="msgboxprompt">
+            <p>Kustutan?</p>
+        </div>
+            <br><div style="text-align: center;" id="msgboxbuttons" class="ui-grid-a">
+            <div class="ui-block-a">
+                <a data-method="" data-id="" data-topage="" id="msgboxyes" data-role="button" data-icon="check">Jah</a>
+            </div>
+            <div class="ui-block-b">
+                <a data-method="" data-id="" data-topage="" id="msgboxno" data-role="button" data-icon="delete" data-theme="b">Ei</a>
+            </div>
+        </div>
+        </div>
+
+    </section>
+    <section data-dismissible="false" data-transition="pop" id="alertbox" data-role="dialog">
+
+        <header id="alertboxHdr" data-role="header" data-position="fixed">
+            <h1>Error</h1>
+        </header>
+        <div id="alertboxCnt" data-role="content">
+            <div id="alertboxtitle">
+            </div>
+            <br><div id="alertboxprompt">
+            <p>An error has been encountered!</p>
+        </div>
+            <br><div style="text-align: center;" id="alertboxbuttons" class="ui-grid-solo">
+            <div class="ui-block-a">
+                <a data-method="" data-id="" data-topage="" id="alertboxok" data-role="button" data-icon="check" data-theme="b">Ok</a>
+            </div>
+        </div>
+        </div>
+
+    </section>
+</body>
+</html>
